@@ -1,0 +1,70 @@
+Файлом с командами Shell:
+
+from portal.models import *
+
+1.Создать двух пользователей:
+user1 = User.objects.create_user('Vika')
+user2 = User.objects.create_user('Anton')
+
+2.Создать два объекта модели Author, связанные с пользователями:
+author1 = Author.objects.create(user=user1)
+author2 = Author.objects.create(user=user2)
+
+3.Добавить 4 категории в модель Category:
+category1 = Category.objects.create(name_category = 'Спорт')
+category2 = Category.objects.create(name_category = 'Политика')
+category3 = Category.objects.create(name_category = 'Образование')
+category4 = Category.objects.create(name_category = 'Благоустройство')
+
+4.Добавить 2 статьи и 1 новость:
+post1 = Post.objects.create(choice_field ='ART', author=author1, news_headline = "Российские вратари больше не лучшие в НХЛ.", news_text = "На протяжении последних лет российская школа хоккейных вратарей считалась одной из лучших в мире, но нынешний сезон НХЛ показывает, что позиции наших голкиперов стали значительно слабее. В топ-3 претендентов на престижный приз — «Везина Трофи» — впервые за долгое время не оказалось ни одного россиянина.")
+post2 = Post.objects.create(choice_field ='ART', author=author2, news_headline = "Что известно о школьном предмете ОДНКНР.", news_text = "В образовательную программу российских школ будет вновь включен курс «Основы духовно-нравственной культуры народов России» (ОДНКНР) для учащихся 5-7 классов. Об этом сообщил патриарх Кирилл, глава Русской православной церкви. Предмет будут преподавать учителя истории. По словам патриарха, по его инициативе была создана рабочая группа, которая на протяжении последнего года сотрудничала с различными госструктурами. В итоге было достигнуто соглашение о реинтеграции этого учебного предмета в программу. Что известно о предмете ОДНКНР — в материале URA.RU.")
+post3 = Post.objects.create(choice_field ='NEW', author=author1, news_headline = "Благоустройство городской среды, особенности формирования", post3.news_text = "Благоустройство – одна из важнейших составляющих градостроительства, которая представляет собой разработку и реализацию комплексных мероприятий, направленных на улучшение функционального, санитарного экологического и эстетического состояния общественных пространств с целью повышения качества уровня жизни местных жителей и привлекательности города для туристов и мигрантов, что как следствие увеличивает темпы его экономического развития и способствует росту конкурентоспособности.")
+
+5.Присвоить им категории
+postcategory1 = PostCategory.objects.create(post=post1, Category = category1)
+postcategory1add = PostCategory.objects.create(post=post1, Category = category2)
+postcategory2 = PostCategory.objects.create(post=post2, Category = category3)
+postcategory2add = PostCategory.objects.create(post=post2, Category = category4)
+postcategory3 = PostCategory.objects.create(post=post2, Category = category4)
+postcategory3add = PostCategory.objects.create(post=post3, Category = category2)
+
+
+6.Создать как минимум 4 комментария к разным объектам модели Post
+com1 = Comment.objects.create(comment_text='Интересная новость', post=post1, user=user1)
+com2 = Comment.objects.create(comment_text='Давно пора было!!!', post=post2, user=user2)
+com3 = Comment.objects.create(comment_text='Крым НАШ!', post=post3, user=user1)
+com4 = Comment.objects.create(comment_text='Согласен', post=post1, user=user2)
+com5 = Comment.objects.create(comment_text='И пол года не прошло', post=post2, user=user1)
+
+7.Применяя функции like() и dislike()
+post1.like()
+post1.like()
+post1.like()
+post2.like()
+post1.like()
+post1.like()
+post1.like()
+post2.like()
+post2.like()
+post3.like()
+post3.like()
+post3.like()
+post3.like()
+post3.like()
+
+8.Обновить рейтинги пользователей:
+author1.update_rating()
+author2.update_rating()
+
+9.Вывести username и рейтинг лучшего пользователя:
+best_user_name_rating = Author.objects.filter(id=Author.objects.order_by('-rating').first().id).values_list('user__username','rating')
+
+10.Вывести дату добавления, username автора, рейтинг, заголовок и превью лучшей статьи,
+основываясь на лайках/дислайках к этой статье:
+
+best_post_user = Post.objects.filter(id=Author.objects.order_by('-rating').first().id).values_list('date_time', 'author__user__username', 'news_rating', 'news_headline')
+
+
+11.Вывести все комментарии (дата, пользователь, рейтинг, текст) к этой статье:
+all_comments = Comment.objects.filter().values_list('date_time', 'user__username', 'comment_rating', 'comment_text')
