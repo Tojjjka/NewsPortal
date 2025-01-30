@@ -64,7 +64,7 @@ best_user_name_rating = Author.objects.filter(id=Author.objects.order_by('-ratin
 основываясь на лайках/дислайках к этой статье:
 
 best_post_user = Post.objects.filter(id=Author.objects.order_by('-rating').first().id).values_list('date_time', 'author__user__username', 'news_rating', 'news_headline')
-
+best_post_user.preview()
 
 11.Вывести все комментарии (дата, пользователь, рейтинг, текст) к этой статье:
 all_comments = Comment.objects.filter().values_list('date_time', 'user__username', 'comment_rating', 'comment_text')
